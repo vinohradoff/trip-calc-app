@@ -1,5 +1,7 @@
 {
   "name": "trip-calc",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

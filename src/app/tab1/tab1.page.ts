@@ -1,12 +1,31 @@
 import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { TripModalComponent } from '../components/trip-modal/trip-modal.component';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page {
+  constructor(private modalCtrl: ModalController) {
+    // this.openModal();
+  }
 
-  constructor() {}
+  async openModal() {
+    console.log('opened modal', { name: 'test' });
 
+    // this.db.addTrip('test');
+
+    const modal = await this.modalCtrl.create({
+      component: TripModalComponent,
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    if (role === 'confirm') {
+      // this.message = `Hello, ${data}!`;
+    }
+  }
 }
