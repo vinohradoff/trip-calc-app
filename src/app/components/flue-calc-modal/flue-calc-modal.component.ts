@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-
+import { TripFlueCalculation } from 'src/app/models/trip.models';
 import { ToasterService } from '../toaster/toaster.service';
 
 @Component({
-  selector: 'app-trip-modal',
-  templateUrl: './trip-modal.component.html',
-  styleUrls: ['./trip-modal.component.scss'],
+  selector: 'app-flue-calc-modal',
+  templateUrl: './flue-calc-modal.component.html',
+  styleUrls: ['./flue-calc-modal.component.scss'],
 })
-export class TripModalComponent implements OnInit {
+export class FlueCalcModalComponent implements OnInit {
   form: FormGroup;
-  modalData: any;
+  modalData?: TripFlueCalculation;
 
   constructor(
     private modalCtrl: ModalController,
@@ -19,16 +19,23 @@ export class TripModalComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      name: ['test', Validators.required],
-      odometrValue: ['', Validators.required],
-      flueCount: ['flue', Validators.required],
-      addBlueCount: ['', Validators.required],
+      flueCount: [''],
+      distance: ['', Validators.required],
+      weight: ['', Validators.required],
+      coefficient: ['', Validators.required],
+      coefficientOperator: ['plus', Validators.required],
     });
   }
 
   ngOnInit() {
-    console.log(this.modalData);
+    if (this.modalData) {
+      this.pathValueWithProps();
+    }
     // TODO: preset value with the last trip
+  }
+
+  private pathValueWithProps() {
+    this.form.patchValue(this.modalData as TripFlueCalculation);
   }
 
   cancel() {

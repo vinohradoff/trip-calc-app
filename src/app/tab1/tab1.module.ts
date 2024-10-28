@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { Tab1Page } from './tab1.page';
 
+import { FlueCalcModalModule } from '../components/flue-calc-modal/flue-calc-modal.module';
 import { TripModalModule } from '../components/trip-modal/trip-modal.module';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 
@@ -15,6 +16,7 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
     FormsModule,
     Tab1PageRoutingModule,
     TripModalModule,
+    FlueCalcModalModule,
   ],
   declarations: [Tab1Page],
 })

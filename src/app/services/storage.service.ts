@@ -13,8 +13,8 @@ export class StorageService {
   public userList: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
   private databaseName: string = '';
   private uUpdStmts: UserUpgradeStatements = new UserUpgradeStatements();
-  private versionUpgrades;
-  private loadToVersion;
+  // private versionUpgrades;
+  // private loadToVersion;
   private db!: SQLiteDBConnection;
   private isUserReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
@@ -23,9 +23,9 @@ export class StorageService {
 
     private dbVerService: DbnameVersionService
   ) {
-    this.versionUpgrades = this.uUpdStmts.userUpgrades;
-    this.loadToVersion =
-      this.versionUpgrades[this.versionUpgrades.length - 1].toVersion;
+    // this.versionUpgrades = this.uUpdStmts.userUpgrades;
+    // this.loadToVersion =
+    //   this.versionUpgrades[this.versionUpgrades.length - 1].toVersion;
   }
 
   debugDb() {
@@ -35,25 +35,22 @@ export class StorageService {
   }
 
   async initializeDatabase(dbName: string) {
-    this.databaseName = dbName;
-
-    // create upgrade statements
-    await this.sqliteService.addUpgradeStatement({
-      database: this.databaseName,
-      upgrade: this.versionUpgrades,
-    });
-
-    // create and/or open the database
-    this.db = await this.sqliteService.openDatabase(
-      this.databaseName,
-      false,
-      'no-encryption',
-      this.loadToVersion,
-      false
-    );
-    this.dbVerService.set(this.databaseName, this.loadToVersion);
-
-    await this.getUsers();
+    // this.databaseName = dbName;
+    // // create upgrade statements
+    // await this.sqliteService.addUpgradeStatement({
+    //   database: this.databaseName,
+    //   upgrade: this.versionUpgrades,
+    // });
+    // // create and/or open the database
+    // this.db = await this.sqliteService.openDatabase(
+    //   this.databaseName,
+    //   false,
+    //   'no-encryption',
+    //   this.loadToVersion,
+    //   false
+    // );
+    // this.dbVerService.set(this.databaseName, this.loadToVersion);
+    // await this.getUsers();
   }
   // Current database state
   userState() {
@@ -64,9 +61,9 @@ export class StorageService {
   }
 
   async loadUsers() {
-    const users: User[] = (await this.db.query('SELECT * FROM users;'))
-      .values as User[];
-    this.userList.next(users);
+    // const users: User[] = (await this.db.query('SELECT * FROM users;'))
+    //   .values as User[];
+    // this.userList.next(users);
   }
   // CRUD Operations
   async getUsers() {

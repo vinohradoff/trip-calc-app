@@ -1,28 +1,28 @@
 export class UserUpgradeStatements {
   userUpgrades = [
     {
-      toVersion: 2,
+      toVersion: 1,
       statements: [
-        `CREATE TABLE IF NOT EXISTS users(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+        `CREATE TABLE IF NOT EXISTS trip(
+          tripId INTEGER PRIMARY KEY AUTOINCREMENT,
           name TEXT NOT NULL,
-          active INTEGER DEFAULT 1
+          active INTEGER DEFAULT 1,
+          flue TEXT,
+          addBlue TEXT,
+          startDate INTEGER,
+          endDate INTEGER,
           );`,
-        `CREATE TABLE IF NOT EXISTS users(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT NOT NULL,
-          active INTEGER DEFAULT 1
+        `CREATE TABLE IF NOT EXISTS formula(
+          formulaId INTEGER PRIMARY KEY AUTOINCREMENT,
+          type TEXT NOT NULL,
+          tripId,
+           FOREIGN KEY(tripId) REFERENCES trip(tripId),
           );`,
       ],
     },
-    /* add new statements below for next database version when required*/
-    /*
-      {
-      toVersion: 2,
-      statements: [
-          `ALTER TABLE users ADD COLUMN email TEXT;`,
-      ]
-      },
-      */
+    // {
+    //   toVersion: 2,
+    //   statements: [`ALTER TABLE users ADD COLUMN email TEXT;`],
+    // },
   ];
 }

@@ -6,6 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ToasterModule } from './components/toaster/toaster.module';
 import { InitializeAppService } from './services/initialize.service';
 
 // Define the APP_INITIALIZER factory
@@ -15,7 +16,12 @@ export function initializeFactory(init: InitializeAppService) {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    ToasterModule,
+  ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
