@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TripModalComponent } from '../components/trip-modal/trip-modal.component';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-tab1',
@@ -8,11 +9,15 @@ import { TripModalComponent } from '../components/trip-modal/trip-modal.componen
   styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page {
-  constructor(private modalCtrl: ModalController) {
-    // this.openModal();
-  }
+  constructor(
+    private modalCtrl: ModalController,
+    private storageService: StorageService
+  ) {}
+
+  data = this.storageService.fetchUsers();
 
   async openModal() {
+    this.storageService.debugDb();
     console.log('opened modal', { name: 'test' });
 
     // this.db.addTrip('test');
@@ -21,7 +26,6 @@ export class Tab1Page {
       component: TripModalComponent,
     });
     modal.present();
-
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
