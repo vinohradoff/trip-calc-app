@@ -23,7 +23,7 @@ export class FlueCalcModalComponent implements OnInit {
       distance: ['', Validators.required],
       weight: ['', Validators.required],
       coefficient: ['', Validators.required],
-      coefficientOperator: ['plus', Validators.required],
+      // coefficientOperator: ['plus', Validators.required],
     });
   }
 

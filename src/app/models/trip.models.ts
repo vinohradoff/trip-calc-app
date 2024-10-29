@@ -8,10 +8,18 @@ export type TripFlueCalculation = {
   distance: number;
   weight: number;
   coefficient: number;
-  coefficientOperator: TripFlueCoefficientOperator;
+  // coefficientOperator: TripFlueCoefficientOperator;
 };
 
 export enum TripFlueCoefficientOperator {
   PLUS = 'plus',
   MINUS = 'minus',
 }
+
+// export type TripAddBlueCalculation = {
+//   flueCount: number;
+//   distance: number;
+//   weight: number;
+//   coefficient: number;
+//   // coefficientOperator: TripFlueCoefficientOperator;
+// };

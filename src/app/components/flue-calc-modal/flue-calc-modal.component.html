@@ -15,9 +15,12 @@
   <ion-item>
     <ion-input
       labelPlacement="stacked"
-      label="Получино топлива (л)"
+      label="Дозаправка топлива (л)"
       formControlName="flueCount"
       type="number"
+      min="0"
+      errorText="Неверное значение"
+      [counter]="true"
     ></ion-input>
   </ion-item>
 
@@ -26,6 +29,8 @@
       labelPlacement="stacked"
       label="(X) *Пройденая дистанция (км)"
       type="number"
+      min="0"
+      errorText="Неверное значение"
       formControlName="distance"
     ></ion-input>
   </ion-item>
@@ -35,6 +40,8 @@
       labelPlacement="stacked"
       label="(Y) *Вес груза (т.)"
       type="number"
+      min="0"
+      errorText="Неверное значение"
       formControlName="weight"
     ></ion-input>
   </ion-item>
@@ -45,10 +52,11 @@
       label="(V) *Коеф-ент. норм расхода топлива (%)"
       type="number"
       formControlName="coefficient"
+      errorText="Неверное значение"
     ></ion-input>
   </ion-item>
 
-  <ion-item>
+  <!-- <ion-item>
     <ion-segment formControlName="coefficientOperator">
       <ion-segment-button value="plus">
         <ion-label>
@@ -61,5 +69,5 @@
         </ion-label>
       </ion-segment-button>
     </ion-segment>
-  </ion-item>
+  </ion-item> -->
 </ion-content>

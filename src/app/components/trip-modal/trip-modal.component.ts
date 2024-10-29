@@ -20,13 +20,16 @@ export class TripModalComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       name: ['test', Validators.required],
-      odometrValue: ['', Validators.required],
+      odometrCount: ['', Validators.required],
       flueCount: ['flue', Validators.required],
       addBlueCount: ['', Validators.required],
     });
   }
 
   ngOnInit() {
+    if (this.modalData) {
+      this.form.patchValue(this.modalData);
+    }
     console.log(this.modalData);
     // TODO: preset value with the last trip
   }

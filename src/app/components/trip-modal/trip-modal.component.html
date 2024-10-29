@@ -5,9 +5,9 @@
     </ion-buttons>
     <ion-title>Новая поездка</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true" [disabled]="form.invalid"
-        >Создать</ion-button
-      >
+      <ion-button (click)="confirm()" [strong]="true" [disabled]="form.invalid">
+        Сохранить
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -17,6 +17,7 @@
       labelPlacement="stacked"
       label="*Название поездки"
       formControlName="name"
+      errorText="Неверное значение"
     ></ion-input>
   </ion-item>
 
@@ -25,7 +26,9 @@
       labelPlacement="stacked"
       label="*Показания одометра (км)"
       type="number"
-      formControlName="odometrValue"
+      min="0"
+      errorText="Неверное значение"
+      formControlName="odometrCount"
     ></ion-input>
   </ion-item>
 
@@ -34,6 +37,8 @@
       labelPlacement="stacked"
       label="*Наличие топлива (л)"
       type="number"
+      min="0"
+      errorText="Неверное значение"
       formControlName="flueCount"
     ></ion-input>
   </ion-item>
@@ -43,6 +48,8 @@
       labelPlacement="stacked"
       label="*Наличие addBlue (л)"
       type="number"
+      min="0"
+      errorText="Неверное значение"
       formControlName="addBlueCount"
     ></ion-input>
   </ion-item>

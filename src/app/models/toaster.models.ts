@@ -5,4 +5,5 @@ export type ToastMsg = {
 export enum ToasterType {
   Info,
   Warn,
+  Danger,
 }

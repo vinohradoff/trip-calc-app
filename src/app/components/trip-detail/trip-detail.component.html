@@ -1,0 +1,102 @@
+<ion-content [fullscreen]="true" *ngIf="true">
+  <ion-toolbar>
+    <ion-title size="large">
+      <div>Киев-Одесса</div>
+    </ion-title>
+    <div class="space-left-15">12-05-89 12:30</div>
+    <div class="ion-float-end">
+      <ion-button
+        size="small"
+        color="medium"
+        fill="outline"
+        (click)="openEditTripModal()"
+      >
+        <ion-icon name="pencil-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+
+  <ion-list>
+    <ion-item>
+      <ion-label><b>Одометра перед выездом: </b> 38000км.</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><b>Топлива перед выездом: </b> 500л.</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><b>AddBlue перед выездом: </b> 500л.</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-label><b>Сумма расчетов расхода топлива: </b> 507л.</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><b>Остаток топлива: </b> 38000л.</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><b>Остаток AddBlue: </b> 20л.</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><b>Показание одометра: </b> 47787км.</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-item class="ion-margin-top">
+    <ion-toolbar class="calculation-block">
+      <div><b>Расчет расхода addBlue:</b></div>
+      <div><i>(X / 100) x 4 = ?</i></div>
+      <div class="text-small-size"><b>X(Израсходовано топлива)</b> = 10</div>
+      <div class="text-small-size"><b>Израсходовано</b> = 17.7л</div>
+    </ion-toolbar>
+  </ion-item>
+
+  <ion-item class="ion-margin-top">
+    <ion-toolbar class="calculation-block">
+      <div>
+        <b>Расчет расхода топлива:</b>
+        <div><i>(X + (43.8 + (Y x 1.3)) / 100) + V = ?</i></div>
+      </div>
+
+      <div class="calculation-block">
+        <div class="text-small-size"><b>Дозаправка</b> = 100л.</div>
+        <div class="text-small-size"><b>X(дистанция)</b> = 1000км.</div>
+        <div class="text-small-size"><b>Y(вес)</b> = 10т.</div>
+        <div class="text-small-size"><b>V(коефициент)</b> = -10%</div>
+        <div class="text-small-size"><b>Израсходовано</b> = 17.7л</div>
+        <ion-toolbar>
+          <ion-button
+            slot="start"
+            fill="outline"
+            color="medium"
+            size="small"
+            (click)="openFlueCalcModal()"
+          >
+            <ion-icon name="pencil-outline"></ion-icon>
+          </ion-button>
+          <ion-button
+            slot="end"
+            size="small"
+            fill="outline"
+            color="danger"
+            (click)="deleteFlueCalc()"
+          >
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-toolbar>
+      </div>
+
+      <div>
+        <ion-button expand="block" (click)="openFlueCalcModal()">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-toolbar>
+  </ion-item>
+</ion-content>
