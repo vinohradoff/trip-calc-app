@@ -1,16 +1,24 @@
-import { Injectable } from '@angular/core';
-import { ActiveTrip, Trip, TripDetail } from '../models/trip.models';
+import { Injectable, signal, WritableSignal } from '@angular/core';
+import {
+  ActiveTrip,
+  FlueFormula,
+  Trip,
+  TripDetail,
+} from '../models/trip.models';
+import { FormulaDataService } from './formula-data.service';
 import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TripDataService {
-  constructor(private storageService: StorageService) {}
+  constructor(
+    private storageService: StorageService,
+    private formulaDataService: FormulaDataService
+  ) {}
   // trips: WritableSignal<TripDetail[] | undefined> = signal(undefined);
-  // activeTrip: WritableSignal<ActiveTrip | undefined> = signal(undefined);
+  activeTrip: WritableSignal<ActiveTrip | undefined> = signal(undefined);
   trips: TripDetail[] | undefined = undefined;
-  activeTrip: ActiveTrip | undefined = undefined;
 
   async createTrip(data: Trip) {
     const sql = `INSERT INTO trips (label, flueCount, addBlueCount, odometrCount, startDate) VALUES (?, ?, ?, ?, ?);`;
@@ -44,10 +52,15 @@ export class TripDataService {
     let trip = this.trips?.filter((trip) => !trip.endDate)[0];
 
     if (trip) {
-      return {
+      let formuls = (
+        await this.formulaDataService.fetchFormulasByTripId(trip.tripId)
+      ).values as FlueFormula[];
+
+      this.activeTrip.set({
         ...trip,
         active: true,
-      };
+        formuls,
+      });
     }
 
     return undefined;

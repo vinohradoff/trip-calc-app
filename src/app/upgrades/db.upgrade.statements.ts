@@ -14,12 +14,12 @@ export class DBUpgradeStatements {
           );`,
         `CREATE TABLE IF NOT EXISTS formuls(
           formulaId INTEGER PRIMARY KEY AUTOINCREMENT,
-          flueCount INTEGER DEFAULT 0,
+          flueCount INTEGER NOT NULL DEFAULT 0,
           distance INTEGER NOT NULL,
           weight INTEGER NOT NULL,
           coefficient INTEGER NOT NULL,
           tripId INTEGER NOT NULL,
-           FOREIGN KEY(tripId) REFERENCES trip(tripId),
+          FOREIGN KEY(tripId) REFERENCES trips(tripId)
           );`,
       ],
     },

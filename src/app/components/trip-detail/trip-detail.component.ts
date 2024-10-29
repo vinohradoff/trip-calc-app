@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TripDetail, TripFlueCalculation } from 'src/app/models/trip.models';
+import { FlueFormula } from 'src/app/models/trip.models';
+import { FormulaDataService } from 'src/app/services/formula-data.service';
+import { TripDataService } from 'src/app/services/trip-data.service';
 import { FlueCalcModalComponent } from '../flue-calc-modal/flue-calc-modal.component';
 import { ToasterService } from '../toaster/toaster.service';
 import { TripModalComponent } from '../trip-modal/trip-modal.component';
@@ -11,11 +13,13 @@ import { TripModalComponent } from '../trip-modal/trip-modal.component';
   styleUrls: ['./trip-detail.component.scss'],
 })
 export class TripDetailComponent implements OnInit {
-  @Input() trip!: TripDetail;
+  @Input() trip!: any;
 
   constructor(
     private modalCtrl: ModalController,
-    private toaster: ToasterService
+    private toaster: ToasterService,
+    private formulaDataService: FormulaDataService,
+    private tripDataService: TripDataService
   ) {}
 
   ngOnInit(): void {}
@@ -42,10 +46,10 @@ export class TripDetailComponent implements OnInit {
     }
   }
 
-  async openFlueCalcModal(tripData?: TripFlueCalculation) {
+  async openFlueCalcModal(tripData?: FlueFormula) {
     const modal = await this.modalCtrl.create({
       component: FlueCalcModalComponent,
-      componentProps: { modalData: tripData },
+      componentProps: { modalData: { ...tripData, tripId: this.trip.tripId } },
     });
 
     modal.present();
@@ -53,11 +57,18 @@ export class TripDetailComponent implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
-      // this.message = `Hello, ${data}!`;
+      this.tripDataService.getActiveTrip();
     }
   }
 
-  deleteFlueCalc() {
-    this.toaster.info('Удален расчет топлива');
+  async deleteFlueCalc(formulaId: number) {
+    try {
+      await this.formulaDataService.deleteFormulaById(formulaId);
+      this.toaster.info('формула успешно удалена');
+
+      this.tripDataService.getActiveTrip();
+    } catch (err) {
+      this.toaster.error('Ошибка при удалении формулы');
+    }
   }
 }

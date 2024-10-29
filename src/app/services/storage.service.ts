@@ -53,7 +53,7 @@ export class StorageService {
     // await this.getUsers();
   }
 
-  run(sql: string, value: any[]) {
+  run(sql: string, value?: any[]) {
     return this.db.run(sql, value);
   }
 

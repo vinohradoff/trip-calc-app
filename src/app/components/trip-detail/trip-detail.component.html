@@ -38,6 +38,7 @@
     </ion-item>
   </ion-list>
 
+  @if (trip.formuls.length) {
   <ion-list>
     <ion-item>
       <ion-label><b>Сумма расчетов расхода топлива: </b> 507л.</ion-label>
@@ -64,6 +65,7 @@
       <div class="text-small-size"><b>Израсходовано</b> = 17.7л</div>
     </ion-toolbar>
   </ion-item>
+  }
 
   <ion-item class="ion-margin-top">
     <ion-toolbar class="calculation-block">
@@ -72,13 +74,23 @@
         <div><i>(X + (43.8 + (Y x 1.3)) / 100) + V = ?</i></div>
       </div>
 
+      @for (formula of trip.formuls; track $index) {
       <div class="calculation-block">
-        <div class="text-small-size"><b>Дозаправка</b> = 100л.</div>
-        <div class="text-small-size"><b>X(дистанция)</b> = 1000км.</div>
-        <div class="text-small-size"><b>Y(вес)</b> = 10т.</div>
-        <div class="text-small-size"><b>V(коефициент)</b> = -10%</div>
+        <div class="text-small-size">
+          <b>Дозаправка</b> = {{ formula.flueCount }}л.
+        </div>
+        <div class="text-small-size">
+          <b>X(дистанция)</b> = {{ formula.distance }}км.
+        </div>
+        <div class="text-small-size">
+          <b>Y(вес)</b> = {{ formula.weight }}т.
+        </div>
+        <div class="text-small-size">
+          <b>V(коефициент)</b> = {{ formula.coefficient }}%
+        </div>
         <div class="text-small-size"><b>Израсходовано</b> = 17.7л</div>
         <ion-toolbar>
+          <!-- EDIT BUTTON -->
           <ion-button
             slot="start"
             fill="outline"
@@ -88,17 +100,20 @@
           >
             <ion-icon name="pencil-outline"></ion-icon>
           </ion-button>
+
+          <!-- DELETE BUTTON -->
           <ion-button
             slot="end"
             size="small"
             fill="outline"
             color="danger"
-            (click)="deleteFlueCalc()"
+            (click)="deleteFlueCalc(formula.formulaId)"
           >
             <ion-icon name="trash-outline"></ion-icon>
           </ion-button>
         </ion-toolbar>
       </div>
+      }
 
       <div>
         <ion-button expand="block" (click)="openFlueCalcModal()">

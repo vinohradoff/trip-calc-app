@@ -1,5 +1,5 @@
-@if(trip) {
-<app-trip-detail [trip]="trip"></app-trip-detail>
+@if(trip()) {
+<app-trip-detail [trip]="trip()"></app-trip-detail>
 } @else {
 <ion-content>
   <ion-toolbar class="center">

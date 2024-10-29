@@ -9,24 +9,26 @@ export type Trip = {
 export type TripDetail = Trip & {
   tripId: number;
   endDate: number;
+  formuls: FlueFormula[];
 };
 
 export type ActiveTrip = TripDetail & {
-  active: boolean;
-};
-
-export type TripFlueCalculation = {
-  flueCount: number;
-  distance: number;
-  weight: number;
-  coefficient: number;
-  // coefficientOperator: TripFlueCoefficientOperator;
+  active?: boolean;
 };
 
 export enum TripFlueCoefficientOperator {
   PLUS = 'plus',
   MINUS = 'minus',
 }
+
+export type FlueFormula = {
+  formulaId: number;
+  tripId: number;
+  flueCount: number;
+  distance: number;
+  weight: number;
+  coefficient: number;
+};
 
 // export type TripAddBlueCalculation = {
 //   flueCount: number;

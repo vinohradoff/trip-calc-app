@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { TripFlueCalculation } from 'src/app/models/trip.models';
+import { FlueFormula } from 'src/app/models/trip.models';
+import { FormulaDataService } from 'src/app/services/formula-data.service';
 import { ToasterService } from '../toaster/toaster.service';
 
 @Component({
@@ -11,18 +12,19 @@ import { ToasterService } from '../toaster/toaster.service';
 })
 export class FlueCalcModalComponent implements OnInit {
   form: FormGroup;
-  modalData?: TripFlueCalculation;
+  modalData!: FlueFormula;
 
   constructor(
     private modalCtrl: ModalController,
     private toasterService: ToasterService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private formulaDataService: FormulaDataService
   ) {
     this.form = this.fb.group({
-      flueCount: [''],
-      distance: ['', Validators.required],
-      weight: ['', Validators.required],
-      coefficient: ['', Validators.required],
+      flueCount: [20],
+      distance: [200, Validators.required],
+      weight: [2, Validators.required],
+      coefficient: [1.5, Validators.required],
     });
   }
 
@@ -30,11 +32,10 @@ export class FlueCalcModalComponent implements OnInit {
     if (this.modalData) {
       this.pathValueWithProps();
     }
-    // TODO: preset value with the last trip
   }
 
   private pathValueWithProps() {
-    this.form.patchValue(this.modalData as TripFlueCalculation);
+    this.form.patchValue(this.modalData as FlueFormula);
   }
 
   cancel() {
@@ -42,7 +43,28 @@ export class FlueCalcModalComponent implements OnInit {
   }
 
   confirm() {
+    if (this.form.invalid) {
+      return this.toasterService.warn('Invalid form');
+    }
+
+    this.addNewFormula();
+
     // TODO: save to db;
     // return this.modalCtrl.dismiss('this.name', 'confirm');
+  }
+
+  async addNewFormula() {
+    let value = this.form.value;
+
+    try {
+      let res = await this.formulaDataService.addFormula({
+        ...value,
+        tripId: this.modalData.tripId,
+      });
+      this.modalCtrl.dismiss(res, 'confirm');
+    } catch (err) {
+      console.error(err);
+      this.toasterService.error('Error to save trip');
+    }
   }
 }

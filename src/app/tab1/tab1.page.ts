@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, WritableSignal } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TripModalComponent } from '../components/trip-modal/trip-modal.component';
 import { ActiveTrip } from '../models/trip.models';
@@ -10,7 +10,8 @@ import { TripDataService } from '../services/trip-data.service';
   styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page implements OnInit {
-  trip: ActiveTrip | undefined;
+  trip: WritableSignal<ActiveTrip | undefined> =
+    this.tripDataService.activeTrip;
 
   constructor(
     private modalCtrl: ModalController,
@@ -23,7 +24,8 @@ export class Tab1Page implements OnInit {
   }
 
   private async getActiveTrip() {
-    this.trip = await this.tripDataService.getActiveTrip();
+    this.tripDataService.getActiveTrip();
+    console.log('this.trip', this.trip);
   }
 
   async openTripModal() {
