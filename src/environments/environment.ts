@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  dbName: 'tripDb',
+  dbName: 'trips',
 };
 
 /*

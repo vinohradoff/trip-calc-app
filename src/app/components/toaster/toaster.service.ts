@@ -10,7 +10,19 @@ export class ToasterService {
 
   constructor() {}
 
-  show(msg: string, type: ToasterType = ToasterType.Info) {
+  private show(msg: string, type: ToasterType = ToasterType.Info) {
     this.onMessage$.next({ msg });
+  }
+
+  info(msg: string) {
+    this.show(msg, ToasterType.Info);
+  }
+
+  error(msg: string) {
+    this.show(msg, ToasterType.Danger);
+  }
+
+  warn(msg: string) {
+    this.show(msg, ToasterType.Warn);
   }
 }

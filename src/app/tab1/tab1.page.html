@@ -1,17 +1,11 @@
-<!-- <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Tab 1</ion-title>
-  </ion-toolbar>
-</ion-header>
--->
-
-<!-- IF NO ACTIVE TRIP -->
-<!-- <ion-content *ngIf="true">
+@if(trip) {
+<app-trip-detail [trip]="trip"></app-trip-detail>
+} @else {
+<ion-content>
   <ion-toolbar class="center">
-    <ion-button expand="block" (click)="openNewTripModal()" color="success">
+    <ion-button expand="block" (click)="openTripModal()">
       Новая поездка
     </ion-button>
   </ion-toolbar>
-</ion-content> -->
-
-<app-trip-detail></app-trip-detail>
+</ion-content>
+}

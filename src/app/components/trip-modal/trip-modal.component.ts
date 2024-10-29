@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
+import { TripDataService } from 'src/app/services/trip-data.service';
 import { ToasterService } from '../toaster/toaster.service';
 
 @Component({
@@ -16,13 +17,14 @@ export class TripModalComponent implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private toasterService: ToasterService,
+    private tripDataService: TripDataService,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      name: ['test', Validators.required],
-      odometrCount: ['', Validators.required],
-      flueCount: ['flue', Validators.required],
-      addBlueCount: ['', Validators.required],
+      label: ['kiev-odessa', Validators.required],
+      odometrCount: [20000, Validators.required],
+      flueCount: [55, Validators.required],
+      addBlueCount: [4, Validators.required],
     });
   }
 
@@ -37,11 +39,28 @@ export class TripModalComponent implements OnInit {
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
-  i = 1;
-  confirm() {
-    // TODO: save to db;
 
-    this.toasterService.show('ebanasta' + this.i++);
-    // return this.modalCtrl.dismiss('this.name', 'confirm');
+  confirm() {
+    if (this.modalData) {
+      // TODO: edit
+    } else {
+      this.createNewTrip();
+    }
+  }
+
+  private async createNewTrip() {
+    if (this.form.invalid) {
+      return this.toasterService.warn('Invalid form');
+    }
+
+    let value = this.form.value;
+
+    try {
+      let res = await this.tripDataService.createTrip(value);
+      this.modalCtrl.dismiss(res, 'confirm');
+    } catch (err) {
+      console.error(err);
+      this.toasterService.error('Error to save trip');
+    }
   }
 }

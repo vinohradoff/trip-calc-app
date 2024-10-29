@@ -1,6 +1,18 @@
 export type Trip = {
-  id?: string;
-  name: string;
+  label: string;
+  flueCount: number;
+  addBlueCount: number;
+  odometrCount: number;
+  startDate: number;
+};
+
+export type TripDetail = Trip & {
+  tripId: number;
+  endDate: number;
+};
+
+export type ActiveTrip = TripDetail & {
+  active: boolean;
 };
 
 export type TripFlueCalculation = {

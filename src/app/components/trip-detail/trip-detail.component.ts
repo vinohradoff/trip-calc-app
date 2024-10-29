@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { ToasterType } from 'src/app/models/toaster.models';
-import { TripFlueCalculation } from 'src/app/models/trip.models';
-import { StorageService } from 'src/app/services/storage.service';
+import { TripDetail, TripFlueCalculation } from 'src/app/models/trip.models';
 import { FlueCalcModalComponent } from '../flue-calc-modal/flue-calc-modal.component';
 import { ToasterService } from '../toaster/toaster.service';
 import { TripModalComponent } from '../trip-modal/trip-modal.component';
@@ -13,39 +11,16 @@ import { TripModalComponent } from '../trip-modal/trip-modal.component';
   styleUrls: ['./trip-detail.component.scss'],
 })
 export class TripDetailComponent implements OnInit {
+  @Input() trip!: TripDetail;
+
   constructor(
     private modalCtrl: ModalController,
-    private storageService: StorageService,
     private toaster: ToasterService
   ) {}
 
   ngOnInit(): void {}
 
-  // data = this.storageService.fetchUsers();
-
-  async openNewTripModal() {
-    // this.storageService.debugDb();
-    console.log('opened modal', { name: 'test' });
-
-    // this.db.addTrip('test');
-
-    const modal = await this.modalCtrl.create({
-      component: TripModalComponent,
-    });
-    modal.present();
-    const { data, role } = await modal.onWillDismiss();
-
-    if (role === 'confirm') {
-      // this.message = `Hello, ${data}!`;
-    }
-  }
-
-  async openEditTripModal() {
-    // this.storageService.debugDb();
-    console.log('opened modal', { name: 'test' });
-
-    // this.db.addTrip('test');
-
+  async openTripModal() {
     const modal = await this.modalCtrl.create({
       component: TripModalComponent,
       componentProps: {
@@ -57,7 +32,9 @@ export class TripDetailComponent implements OnInit {
         },
       },
     });
+
     modal.present();
+
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
@@ -81,6 +58,6 @@ export class TripDetailComponent implements OnInit {
   }
 
   deleteFlueCalc() {
-    this.toaster.show('Удален расчет топлива', ToasterType.Warn);
+    this.toaster.info('Удален расчет топлива');
   }
 }

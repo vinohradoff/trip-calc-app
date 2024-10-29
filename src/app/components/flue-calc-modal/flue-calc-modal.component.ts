@@ -23,7 +23,6 @@ export class FlueCalcModalComponent implements OnInit {
       distance: ['', Validators.required],
       weight: ['', Validators.required],
       coefficient: ['', Validators.required],
-      // coefficientOperator: ['plus', Validators.required],
     });
   }
 
@@ -41,11 +40,9 @@ export class FlueCalcModalComponent implements OnInit {
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
-  i = 1;
+
   confirm() {
     // TODO: save to db;
-
-    this.toasterService.show('ebanasta' + this.i++);
     // return this.modalCtrl.dismiss('this.name', 'confirm');
   }
 }

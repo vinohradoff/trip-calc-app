@@ -1,15 +1,17 @@
 <ion-content [fullscreen]="true" *ngIf="true">
   <ion-toolbar>
     <ion-title size="large">
-      <div>Киев-Одесса</div>
+      <div>{{ trip.label }}</div>
     </ion-title>
-    <div class="space-left-15">12-05-89 12:30</div>
+    <div class="space-left-15">
+      {{ trip.startDate | date : "dd-MM-YYYY HH:MM" }}
+    </div>
     <div class="ion-float-end">
       <ion-button
         size="small"
         color="medium"
         fill="outline"
-        (click)="openEditTripModal()"
+        (click)="openTripModal()"
       >
         <ion-icon name="pencil-outline"></ion-icon>
       </ion-button>
@@ -18,15 +20,21 @@
 
   <ion-list>
     <ion-item>
-      <ion-label><b>Одометра перед выездом: </b> 38000км.</ion-label>
+      <ion-label
+        ><b>Одометра перед выездом: </b> {{ trip.odometrCount }}км.</ion-label
+      >
     </ion-item>
 
     <ion-item>
-      <ion-label><b>Топлива перед выездом: </b> 500л.</ion-label>
+      <ion-label
+        ><b>Топлива перед выездом: </b> {{ trip.flueCount }}л.</ion-label
+      >
     </ion-item>
 
     <ion-item>
-      <ion-label><b>AddBlue перед выездом: </b> 500л.</ion-label>
+      <ion-label
+        ><b>AddBlue перед выездом: </b> {{ trip.addBlueCount }}л.</ion-label
+      >
     </ion-item>
   </ion-list>
 
