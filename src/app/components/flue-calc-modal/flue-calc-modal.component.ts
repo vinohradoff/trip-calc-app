@@ -21,10 +21,10 @@ export class FlueCalcModalComponent implements OnInit {
     private formulaDataService: FormulaDataService
   ) {
     this.form = this.fb.group({
-      flueCount: [20],
-      distance: [200, Validators.required],
-      weight: [2, Validators.required],
-      coefficient: [1.5, Validators.required],
+      flueCount: ['', Validators.required],
+      distance: ['', Validators.required],
+      weight: ['', Validators.required],
+      coefficient: ['', Validators.required],
     });
   }
 
@@ -35,7 +35,12 @@ export class FlueCalcModalComponent implements OnInit {
   }
 
   private pathValueWithProps() {
-    this.form.patchValue(this.modalData as FlueFormula);
+    this.form.patchValue({
+      flueCount: this.modalData.flueCount,
+      distance: this.modalData.distance,
+      weight: this.modalData.weight,
+      coefficient: this.modalData.coefficient,
+    });
   }
 
   cancel() {
@@ -47,10 +52,11 @@ export class FlueCalcModalComponent implements OnInit {
       return this.toasterService.warn('Invalid form');
     }
 
-    this.addNewFormula();
-
-    // TODO: save to db;
-    // return this.modalCtrl.dismiss('this.name', 'confirm');
+    if (this.modalData?.formulaId) {
+      this.updateFormula();
+    } else {
+      this.addNewFormula();
+    }
   }
 
   async addNewFormula() {
@@ -64,7 +70,22 @@ export class FlueCalcModalComponent implements OnInit {
       this.modalCtrl.dismiss(res, 'confirm');
     } catch (err) {
       console.error(err);
-      this.toasterService.error('Error to save trip');
+      this.toasterService.error('Error to save formula');
+    }
+  }
+
+  async updateFormula() {
+    let value = this.form.value;
+
+    try {
+      let res = await this.formulaDataService.updateFormulaById(
+        this.modalData.formulaId,
+        value
+      );
+      this.modalCtrl.dismiss(res, 'confirm');
+    } catch (err) {
+      console.error(err);
+      this.toasterService.error('Error to update formula');
     }
   }
 }

@@ -1,11 +1,17 @@
-@if(trip()) {
-<app-trip-detail [trip]="trip()"></app-trip-detail>
-} @else {
-<ion-content>
-  <ion-toolbar class="center">
-    <ion-button expand="block" (click)="openTripModal()">
-      Новая поездка
-    </ion-button>
-  </ion-toolbar>
+<ion-header [translucent]="true">
+  <ion-toolbar></ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  @if(trip()) {
+  <app-trip-detail [trip]="trip()"></app-trip-detail>
+  } @else {
+  <ion-content>
+    <ion-toolbar class="center">
+      <ion-button expand="block" (click)="openTripModal()">
+        Новая поездка
+      </ion-button>
+    </ion-toolbar>
+  </ion-content>
+  }
 </ion-content>
-}

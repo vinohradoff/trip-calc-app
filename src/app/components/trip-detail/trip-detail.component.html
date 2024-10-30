@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" *ngIf="true">
+<ion-content [fullscreen]="true">
   <ion-toolbar>
     <ion-title size="large">
       <div>{{ trip.label }}</div>
@@ -6,8 +6,9 @@
     <div class="space-left-15">
       {{ trip.startDate | date : "dd-MM-YYYY HH:MM" }}
     </div>
-    <div class="ion-float-end">
+    <ion-toolbar>
       <ion-button
+        slot="start"
         size="small"
         color="medium"
         fill="outline"
@@ -15,7 +16,17 @@
       >
         <ion-icon name="pencil-outline"></ion-icon>
       </ion-button>
-    </div>
+
+      <ion-button
+        slot="end"
+        size="small"
+        color="danger"
+        fill="outline"
+        (click)="deleteTrip()"
+      >
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-toolbar>
   </ion-toolbar>
 
   <ion-list>
@@ -33,36 +44,57 @@
 
     <ion-item>
       <ion-label
-        ><b>AddBlue перед выездом: </b> {{ trip.addBlueCount }}л.</ion-label
+        ><b>AddBlue перед выездом: </b>
+        {{ trip.addBlueCount | round : 1 }}л.</ion-label
       >
     </ion-item>
   </ion-list>
 
   @if (trip.formuls.length) {
-  <ion-list>
+  <ion-list class="values">
     <ion-item>
-      <ion-label><b>Сумма расчетов расхода топлива: </b> 507л.</ion-label>
+      <ion-label
+        ><b>Израсходовано топлива: </b>
+        {{ flueSumConsumbption | round }}л.</ion-label
+      >
     </ion-item>
 
     <ion-item>
-      <ion-label><b>Остаток топлива: </b> 38000л.</ion-label>
+      <ion-label
+        ><b>Остаток топлива: </b>
+        {{ trip.flueCount - flueSumConsumbption | round }}л.</ion-label
+      >
     </ion-item>
 
     <ion-item>
-      <ion-label><b>Остаток AddBlue: </b> 20л.</ion-label>
+      <ion-label
+        ><b>Израсходовано AddBlue: </b>
+        {{ addBlueConsumption | round }}л.</ion-label
+      >
     </ion-item>
 
     <ion-item>
-      <ion-label><b>Показание одометра: </b> 47787км.</ion-label>
+      <ion-label
+        ><b>Остаток AddBlue: </b>
+        {{ trip.addBlueCount - addBlueConsumption | round : 1 }}л.</ion-label
+      >
+    </ion-item>
+
+    <ion-item>
+      <ion-label><b>Показание одометра: </b> {{ currentOdometr }}км.</ion-label>
     </ion-item>
   </ion-list>
 
   <ion-item class="ion-margin-top">
     <ion-toolbar class="calculation-block">
       <div><b>Расчет расхода addBlue:</b></div>
-      <div><i>(X / 100) x 4 = ?</i></div>
-      <div class="text-small-size"><b>X(Израсходовано топлива)</b> = 10</div>
-      <div class="text-small-size"><b>Израсходовано</b> = 17.7л</div>
+      <div><i>(X / 100) x 4</i></div>
+      <div class="text-small-size">
+        <b>X(Израсходовано топлива)</b> = {{ flueSumConsumbption | round }}
+      </div>
+      <div class="text-small-size">
+        <b>Израсходовано</b> = {{ addBlueConsumption | round : 1 }}л
+      </div>
     </ion-toolbar>
   </ion-item>
   }
@@ -70,8 +102,14 @@
   <ion-item class="ion-margin-top">
     <ion-toolbar class="calculation-block">
       <div>
-        <b>Расчет расхода топлива:</b>
-        <div><i>(X + (43.8 + (Y x 1.3)) / 100) + V = ?</i></div>
+        <ion-toolbar>
+          <b>Расчет расхода топлива:</b>
+
+          <ion-button slot="end" size="small" (click)="openFlueCalcModal()">
+            <ion-icon name="add-outline"></ion-icon>
+          </ion-button>
+        </ion-toolbar>
+        <div><i>(X * (43.8 + (Y x 1.3)) / 100) + V</i></div>
       </div>
 
       @for (formula of trip.formuls; track $index) {
@@ -88,7 +126,9 @@
         <div class="text-small-size">
           <b>V(коефициент)</b> = {{ formula.coefficient }}%
         </div>
-        <div class="text-small-size"><b>Израсходовано</b> = 17.7л</div>
+        <div class="text-small-size">
+          <b>Израсходовано топлива</b> = {{ formula.flueConsumption | round }}л
+        </div>
         <ion-toolbar>
           <!-- EDIT BUTTON -->
           <ion-button
@@ -96,7 +136,7 @@
             fill="outline"
             color="medium"
             size="small"
-            (click)="openFlueCalcModal()"
+            (click)="openFlueCalcModal(formula)"
           >
             <ion-icon name="pencil-outline"></ion-icon>
           </ion-button>
@@ -114,12 +154,19 @@
         </ion-toolbar>
       </div>
       }
-
-      <div>
-        <ion-button expand="block" (click)="openFlueCalcModal()">
-          <ion-icon name="add-outline"></ion-icon>
-        </ion-button>
-      </div>
     </ion-toolbar>
   </ion-item>
+
+  <div class="finish-button">
+    <ion-button
+      slot="end"
+      size="small"
+      expand="block"
+      fill="clear"
+      color="danger"
+      (click)="finishTrip()"
+    >
+      Завершить поездку
+    </ion-button>
+  </div>
 </ion-content>

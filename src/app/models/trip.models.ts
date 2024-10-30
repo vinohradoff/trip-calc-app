@@ -28,6 +28,7 @@ export type FlueFormula = {
   distance: number;
   weight: number;
   coefficient: number;
+  flueConsumption: number;
 };
 
 // export type TripAddBlueCalculation = {

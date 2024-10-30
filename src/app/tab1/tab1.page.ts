@@ -1,7 +1,7 @@
 import { Component, OnInit, WritableSignal } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TripModalComponent } from '../components/trip-modal/trip-modal.component';
-import { ActiveTrip } from '../models/trip.models';
+import { TripDetail } from '../models/trip.models';
 import { TripDataService } from '../services/trip-data.service';
 
 @Component({
@@ -10,8 +10,7 @@ import { TripDataService } from '../services/trip-data.service';
   styleUrls: ['tab1.page.scss'],
 })
 export class Tab1Page implements OnInit {
-  trip: WritableSignal<ActiveTrip | undefined> =
-    this.tripDataService.activeTrip;
+  trip: WritableSignal<TripDetail> = this.tripDataService.activeTrip;
 
   constructor(
     private modalCtrl: ModalController,
@@ -38,7 +37,7 @@ export class Tab1Page implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
-      // this.message = `Hello, ${data}!`;
+      await this.tripDataService.hardReload();
     }
   }
 }

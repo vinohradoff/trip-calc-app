@@ -1,10 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import {
-  ActiveTrip,
-  FlueFormula,
-  Trip,
-  TripDetail,
-} from '../models/trip.models';
+import { FlueFormula, Trip, TripDetail } from '../models/trip.models';
 import { FormulaDataService } from './formula-data.service';
 import { StorageService } from './storage.service';
 
@@ -17,7 +12,7 @@ export class TripDataService {
     private formulaDataService: FormulaDataService
   ) {}
   // trips: WritableSignal<TripDetail[] | undefined> = signal(undefined);
-  activeTrip: WritableSignal<ActiveTrip | undefined> = signal(undefined);
+  activeTrip: WritableSignal<any> = signal(null);
   trips: TripDetail[] | undefined = undefined;
 
   async createTrip(data: Trip) {
@@ -32,6 +27,25 @@ export class TripDataService {
     ];
 
     return this.storageService.run(sql, value);
+  }
+
+  async deleteTrip(tripId: number) {
+    await this.formulaDataService.deleteFormulaByTripId(tripId);
+    let statement = `DELETE FROM trips WHERE tripId=${tripId}`;
+
+    return this.storageService.run(statement);
+  }
+
+  async updateTripById(tripId: number, data: TripDetail) {
+    console.log('data', data);
+    let statement = `UPDATE trips SET 
+      label = '${data.label}',
+      addBlueCount = ${data.addBlueCount},
+      flueCount = ${data.flueCount},
+      odometrCount = ${data.odometrCount}
+      WHERE tripId = ${tripId};`;
+
+    return this.storageService.run(statement);
   }
 
   async fetchTrips() {
@@ -58,11 +72,23 @@ export class TripDataService {
 
       this.activeTrip.set({
         ...trip,
-        active: true,
         formuls,
       });
     }
 
     return undefined;
+  }
+
+  async finishTrip(tripId: number) {
+    const sql = `UPDATE trips SET endDate = ${Date.now()} WHERE tripId = ${tripId};`;
+
+    return this.storageService.run(sql);
+  }
+
+  async hardReload() {
+    this.trips = undefined;
+    this.activeTrip.set(undefined);
+    await this.fetchTrips();
+    await this.getActiveTrip();
   }
 }

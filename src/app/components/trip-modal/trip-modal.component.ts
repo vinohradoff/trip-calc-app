@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
+import { TripDetail } from 'src/app/models/trip.models';
 import { TripDataService } from 'src/app/services/trip-data.service';
 import { ToasterService } from '../toaster/toaster.service';
 
@@ -12,7 +13,7 @@ import { ToasterService } from '../toaster/toaster.service';
 })
 export class TripModalComponent implements OnInit {
   form: FormGroup;
-  modalData: any;
+  modalData!: TripDetail;
 
   constructor(
     private modalCtrl: ModalController,
@@ -21,10 +22,10 @@ export class TripModalComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      label: ['kiev-odessa', Validators.required],
-      odometrCount: [20000, Validators.required],
-      flueCount: [55, Validators.required],
-      addBlueCount: [4, Validators.required],
+      label: ['', Validators.required],
+      odometrCount: ['', Validators.required],
+      flueCount: ['', Validators.required],
+      addBlueCount: ['', Validators.required],
     });
   }
 
@@ -33,7 +34,6 @@ export class TripModalComponent implements OnInit {
       this.form.patchValue(this.modalData);
     }
     console.log(this.modalData);
-    // TODO: preset value with the last trip
   }
 
   cancel() {
@@ -41,18 +41,30 @@ export class TripModalComponent implements OnInit {
   }
 
   confirm() {
-    if (this.modalData) {
-      // TODO: edit
+    if (this.form.invalid) {
+      return this.toasterService.warn('Invalid form');
+    }
+
+    if (this.modalData?.tripId) {
+      this.updateTrip();
     } else {
       this.createNewTrip();
     }
   }
 
-  private async createNewTrip() {
-    if (this.form.invalid) {
-      return this.toasterService.warn('Invalid form');
+  private async updateTrip() {
+    let value = this.form.value;
+    console.log('value update', value);
+    try {
+      await this.tripDataService.updateTripById(this.modalData.tripId, value);
+      this.modalCtrl.dismiss(value, 'confirm');
+    } catch (err) {
+      console.error(err);
+      this.toasterService.error('Error to save trip');
     }
+  }
 
+  private async createNewTrip() {
     let value = this.form.value;
 
     try {

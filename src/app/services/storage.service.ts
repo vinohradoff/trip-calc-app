@@ -27,6 +27,7 @@ export class StorageService {
   }
 
   debugDb() {
+    'debug';
     this.db.exportToJson('full').then((res) => {
       console.log('re', res.export?.tables);
     });
