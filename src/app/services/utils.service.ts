@@ -23,13 +23,18 @@ export class UtilsService {
     let sumFlueCons = this.sumFlueConsumbtion(formuls);
 
     let res = (sumFlueCons / 100) * 4;
-    // return Number(res.toFixed(1));
     return res;
   }
 
   sumFlueConsumbtion(formuls: FlueFormula[]) {
     return formuls.reduce((val, f) => {
       return val + (f.flueConsumption || 0);
+    }, 0);
+  }
+
+  calcAdditionFlue(formuls: FlueFormula[]): number {
+    return formuls.reduce((sum, f) => {
+      return sum + f.flueCount;
     }, 0);
   }
 }

@@ -62,14 +62,16 @@
     <ion-item>
       <ion-label
         ><b>Остаток топлива: </b>
-        {{ trip.flueCount - flueSumConsumbption | round }}л.</ion-label
+        {{
+          trip.flueCount + additionFlue - flueSumConsumbption | round
+        }}л.</ion-label
       >
     </ion-item>
 
     <ion-item>
       <ion-label
         ><b>Израсходовано AddBlue: </b>
-        {{ addBlueConsumption | round }}л.</ion-label
+        {{ addBlueConsumption | round : 1 }}л.</ion-label
       >
     </ion-item>
 

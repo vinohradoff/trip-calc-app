@@ -24,6 +24,7 @@ export class TripDetailComponent implements OnInit, OnChanges {
   currentOdometr!: number;
   addBlueConsumption!: number;
   flueSumConsumbption!: number;
+  additionFlue!: number;
 
   constructor(
     private modalCtrl: ModalController,
@@ -53,6 +54,7 @@ export class TripDetailComponent implements OnInit, OnChanges {
     this.flueSumConsumbption = this.utilsService.sumFlueConsumbtion(
       this.trip.formuls
     );
+    this.additionFlue = this.utilsService.calcAdditionFlue(this.trip.formuls);
   }
 
   private calculateFormuls() {
