@@ -1,17 +1,27 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar>
+    <ion-title>История поездок</ion-title>
+  </ion-toolbar>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <ion-toolbar>
+    <ion-list>
+      @for (trip of trips(); track $index) { @if (trip.endDate) {
+      <ion-item-sliding>
+        <ion-item-options side="start">
+          <ion-item-option color="danger">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+
+        <ion-item [href]="['history/'+trip.tripId]">
+          <ion-label>{{trip.label}}</ion-label>
+          <ion-label class="date"
+            >{{trip.startDate | date: 'dd-MM-YYYY'}}/{{trip.endDate | date:
+            'dd-MM-YYYY'}}</ion-label
+          >
+        </ion-item>
+      </ion-item-sliding>
+      } }
+    </ion-list>
+  </ion-toolbar>
 </ion-content>

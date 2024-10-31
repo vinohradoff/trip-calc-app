@@ -1,5 +1,6 @@
 import {
   Component,
+  effect,
   Input,
   OnChanges,
   OnInit,
@@ -25,6 +26,7 @@ export class TripDetailComponent implements OnInit, OnChanges {
   addBlueConsumption!: number;
   flueSumConsumbption!: number;
   additionFlue!: number;
+  isActive: boolean = false;
 
   constructor(
     private modalCtrl: ModalController,
@@ -32,7 +34,11 @@ export class TripDetailComponent implements OnInit, OnChanges {
     private formulaDataService: FormulaDataService,
     private tripDataService: TripDataService,
     private utilsService: UtilsService
-  ) {}
+  ) {
+    effect(() => {
+      this.isActive = !this.trip.endDate;
+    });
+  }
 
   ngOnInit(): void {}
 

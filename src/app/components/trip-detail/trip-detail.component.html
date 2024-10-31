@@ -6,6 +6,8 @@
     <div class="space-left-15">
       {{ trip.startDate | date : "dd-MM-YYYY HH:MM" }}
     </div>
+
+    @if (isActive) {
     <ion-toolbar>
       <ion-button
         slot="start"
@@ -27,18 +29,19 @@
         <ion-icon name="trash-outline"></ion-icon>
       </ion-button>
     </ion-toolbar>
+    }
   </ion-toolbar>
 
   <ion-list>
     <ion-item>
       <ion-label
-        ><b>Одометра перед выездом: </b> {{ trip.odometrCount }}км.</ion-label
+        ><b>Одометр перед выездом: </b> {{ trip.odometrCount }}км.</ion-label
       >
     </ion-item>
 
     <ion-item>
       <ion-label
-        ><b>Топлива перед выездом: </b> {{ trip.flueCount }}л.</ion-label
+        ><b>Топливо перед выездом: </b> {{ trip.flueCount }}л.</ion-label
       >
     </ion-item>
 
@@ -61,7 +64,7 @@
 
     <ion-item>
       <ion-label
-        ><b>Остаток топлива: </b>
+        ><b>Остаток топлива в баке: </b>
         {{
           trip.flueCount + additionFlue - flueSumConsumbption | round
         }}л.</ion-label
@@ -83,7 +86,7 @@
     </ion-item>
 
     <ion-item>
-      <ion-label><b>Показание одометра: </b> {{ currentOdometr }}км.</ion-label>
+      <ion-label><b>Текущий одометра: </b> {{ currentOdometr }}км.</ion-label>
     </ion-item>
   </ion-list>
 
@@ -107,9 +110,11 @@
         <ion-toolbar>
           <b>Расчет расхода топлива:</b>
 
+          @if (isActive) {
           <ion-button slot="end" size="small" (click)="openFlueCalcModal()">
             <ion-icon name="add-outline"></ion-icon>
           </ion-button>
+          }
         </ion-toolbar>
         <div><i>(X * (43.8 + (Y x 1.3)) / 100) + V</i></div>
       </div>
@@ -131,6 +136,8 @@
         <div class="text-small-size">
           <b>Израсходовано топлива</b> = {{ formula.flueConsumption | round }}л
         </div>
+
+        @if (isActive) {
         <ion-toolbar>
           <!-- EDIT BUTTON -->
           <ion-button
@@ -154,11 +161,13 @@
             <ion-icon name="trash-outline"></ion-icon>
           </ion-button>
         </ion-toolbar>
+        }
       </div>
       }
     </ion-toolbar>
   </ion-item>
 
+  @if (isActive) {
   <div class="finish-button">
     <ion-button
       slot="end"
@@ -171,4 +180,5 @@
       Завершить поездку
     </ion-button>
   </div>
+  }
 </ion-content>

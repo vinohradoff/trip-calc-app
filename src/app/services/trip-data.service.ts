@@ -13,7 +13,8 @@ export class TripDataService {
   ) {}
   // trips: WritableSignal<TripDetail[] | undefined> = signal(undefined);
   activeTrip: WritableSignal<any> = signal(null);
-  trips: TripDetail[] | undefined = undefined;
+  trip: WritableSignal<any> = signal(null);
+  trips: WritableSignal<any> = signal(null);
 
   async createTrip(data: Trip) {
     const sql = `INSERT INTO trips (label, flueCount, addBlueCount, odometrCount, startDate) VALUES (?, ?, ?, ?, ?);`;
@@ -49,34 +50,39 @@ export class TripDataService {
   }
 
   async fetchTrips() {
-    if (!this.trips) {
-      const sql = 'SELECT * FROM trips;';
+    if (!this.trips()) {
+      const sql = 'SELECT * FROM trips ORDER BY startDate DESC;';
       const res = (await this.storageService.query(sql)).values as TripDetail[];
-      this.trips = res;
+      this.trips.set(res);
     }
 
-    return this.trips;
+    // return this.trips;
   }
 
   async getActiveTrip() {
-    if (!this.trips) {
+    if (!this.trips()) {
       await this.fetchTrips();
     }
 
-    let trip = this.trips?.filter((trip) => !trip.endDate)[0];
+    let trip = this.trips().filter((trip: TripDetail) => !trip.endDate)[0];
 
     if (trip) {
-      let formuls = (
-        await this.formulaDataService.fetchFormulasByTripId(trip.tripId)
-      ).values as FlueFormula[];
+      let tripWithFormuls = await this.addFormulsToTrip(trip);
+      this.activeTrip.set(tripWithFormuls);
+    }
+  }
 
-      this.activeTrip.set({
-        ...trip,
-        formuls,
-      });
+  async getTripById(tripId: number) {
+    if (!this.trips()) {
+      await this.fetchTrips();
     }
 
-    return undefined;
+    let trip = this.trips().find((trip: TripDetail) => trip.tripId === tripId);
+
+    if (trip) {
+      let tripWithFormuls = await this.addFormulsToTrip(trip);
+      this.trip.set(tripWithFormuls);
+    }
   }
 
   async finishTrip(tripId: number) {
@@ -86,9 +92,20 @@ export class TripDataService {
   }
 
   async hardReload() {
-    this.trips = undefined;
+    this.trips.set(undefined);
     this.activeTrip.set(undefined);
     await this.fetchTrips();
     await this.getActiveTrip();
+  }
+
+  async addFormulsToTrip(trip: TripDetail) {
+    let formuls = (
+      await this.formulaDataService.fetchFormulasByTripId(trip.tripId)
+    ).values as FlueFormula[];
+
+    return {
+      ...trip,
+      formuls,
+    };
   }
 }

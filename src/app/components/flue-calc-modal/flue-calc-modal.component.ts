@@ -21,7 +21,7 @@ export class FlueCalcModalComponent implements OnInit {
     private formulaDataService: FormulaDataService
   ) {
     this.form = this.fb.group({
-      flueCount: ['', Validators.required],
+      flueCount: [0],
       distance: ['', Validators.required],
       weight: ['', Validators.required],
       coefficient: ['', Validators.required],
@@ -52,16 +52,17 @@ export class FlueCalcModalComponent implements OnInit {
       return this.toasterService.warn('Invalid form');
     }
 
+    let value: FlueFormula = this.form.value;
+    value.flueCount = value.flueCount || 0;
+
     if (this.modalData?.formulaId) {
-      this.updateFormula();
+      this.updateFormula(value);
     } else {
-      this.addNewFormula();
+      this.addNewFormula(value);
     }
   }
 
-  async addNewFormula() {
-    let value = this.form.value;
-
+  async addNewFormula(value: FlueFormula) {
     try {
       let res = await this.formulaDataService.addFormula({
         ...value,
@@ -74,9 +75,7 @@ export class FlueCalcModalComponent implements OnInit {
     }
   }
 
-  async updateFormula() {
-    let value = this.form.value;
-
+  async updateFormula(value: FlueFormula) {
     try {
       let res = await this.formulaDataService.updateFormulaById(
         this.modalData.formulaId,
